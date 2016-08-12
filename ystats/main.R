@@ -4,7 +4,7 @@ pdf(file="output.pdf")
 #Load time serie library
 library("xts")
 library("forecast")
-fc_len<-50
+fc_len<-30
 
 #generate test data or use real trace from IXP
 #create a new experiment 
@@ -19,7 +19,7 @@ v1<-unlist(v["V1"])
 #convert vector from string to date
 v1<-as.POSIXct(v1)
 #create the time serie object we fit
-data<-ts(v2[1:(length(v1)-fc_len)],frequency=24)
+data<-ts(v2[1:(length(v1)-fc_len)],frequency=24,start)
 #automatically fit sarima
 m<-auto.arima(data)
 print(m)
@@ -29,5 +29,6 @@ fc<-forecast(m,level=c(95,80),fc_len)
 plot(append(coredata(fc$x),fc$mean),type="l",col="blue",pch=22, lty=2)
 #display original data
 lines(coredata(v2),col="black",lwd=2)
+plot(fc)
 
 
